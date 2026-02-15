@@ -22,23 +22,17 @@
 
   // ----------------- display power factor from mod bus--------------------
     strcpy_P(arr16, (PGM_P)F(" pf Value: 0.00 ")); 
-    
     insertFloatVal_intoCharArray(arr16, 12, 4, 2, objModBusVar.pf, false);
-
     textPrintOnTFT_SmallFont(arr16, 3);
 
   // ----------------- display low power factor limit -----------------------
     strcpy_P(arr16, (PGM_P)F("low pf lim: 0.00")); // for both lagging & leading
-    
     insertFloatVal_intoCharArray(arr16, 13, 4, 2, PF_LIMIT, false);
-
     textPrintOnTFT_SmallFont(arr16, 4);  
 
   // ----------------- display reactive power from mod bus------------------
     strcpy_P(arr16, (PGM_P)F("Net_kVAr: +00.00"));
-    
     insertFloatVal_intoCharArray(arr16, 11, 6, 2, objModBusVar.kVAr, true);
-
     textPrintOnTFT_SmallFont(arr16, 6);
     
   }
@@ -48,8 +42,8 @@
     strcpy_P(arr16, (PGM_P)F(" CapBank Status ")); textPrintOnTFT_SmallFont(arr16, 1);
     for(uint8_t i=0; i<4; i++){
       strcpy_P(arr16, (PGM_P)F("CapBankPos-n : x"));
-      arr16[11] = 1 << i;
-      arr16[15] = objCapBank.capBankStatusCurr[i]+48;
+      arr16[11] = 1 << i; arr16[11] += 48;
+      arr16[15] = objCapBank.capBankStatusCurr[i]; arr16[15] += 48;
       textPrintOnTFT_SmallFont(arr16, i+2);
     }
   }

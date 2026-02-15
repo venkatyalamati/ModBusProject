@@ -1,16 +1,16 @@
-  //------------------------------------------Include Libraries Below-------------------------------------------------
+  //------------------------------------------Include Libraries Below------------------------------------------------
   #include <EEPROM.h>
   #include <SPI.h>
   #include <Ucglib.h>
   #include "CustomClasses.h"
   #include "ModBusFunctions.h"
 
-  //------------------------------------------Constant Macro Definitions------------------------------------
+  //--------------------------------------------Constants Definitions------------------------------------------------
   constexpr float PF_LIMIT = 0.92f; // limit for both lagging & leading
   constexpr uint16_t ModBusRegAddr_pf = 30063;
   constexpr uint16_t ModBusRegAddr_kVAr = 30061;
   constexpr int addrEepromValidString = 500;
-  //------------------------------------------Gloabl Variables Below-------------------------------------------------
+  //------------------------------------------Gloabl Variable Definitions--------------------------------------------
 
   // Pins used from Bit-0 to Bit-6 on the PCB are: 2,3,4,5,6,7,8 respectively
   CapacitorBank objCapBank(2, 3, 4, 5); // Bit_3_CtrlPin, Bit_2_CtrlPin, Bit_1_CtrlPin, Bit_0_CtrlPin
@@ -19,7 +19,7 @@
 
   ModBusVariables objModBusVar(PF_LIMIT);
  
-  //------------------------------------------Main Setup Code Below-------------------------------------------------
+  //------------------------------------------Main Setup Code Below--------------------------------------------------
   void setup() {
     //Serial.begin(9600);
     delay(1000);
@@ -30,9 +30,9 @@
 
     //executeCtrlPinTestSwitching(2, 8);
    
-  } // ---------------------------------------------- Main Setup ends ---------------------------------------------
+  } // ------------------------------------------Main Setup ends-----------------------------------------------------
 
-  //------------------------------------------Main Loop Code Below-------------------------------------------------
+  //------------------------------------------Main Loop Code Below---------------------------------------------------
   void loop(){
 
     objModBusVar.pf = getRegisterValue(ModBusRegAddr_pf);

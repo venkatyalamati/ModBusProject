@@ -1,75 +1,71 @@
-  char arr16[17];
-
   void displayDashBoard(){
-    ucg.clearScreen(); ucg.setFont(ucg_font_9x18_tf);
+    tftST7735Display.clearScreen(); tftST7735Display.setSmallFont(); tftST7735Display.clearCharBuffer();
 
   // ------------------------ display first line ----------------------------
-    strcpy_P(arr16, (PGM_P)F("Mod Bus Received")); textPrintOnTFT_SmallFont(arr16, 1);
+    strcpy_P(tftST7735Display.charBuffer, (PGM_P)F("Mod Bus Received")); tftST7735Display.textPrintSmallFont(1);
 
   // ------------------------ display second line --------------------------
-    if(objModBusVar.pfRange == PF_Ranges::lagging)
-      strcpy_P(arr16, (PGM_P)F("pf: just lagging"));
-    else if(objModBusVar.pfRange == PF_Ranges::leading)
-      strcpy_P(arr16, (PGM_P)F("pf: just leading"));
-    else if(objModBusVar.pfRange == PF_Ranges::xtrmLagg)
-      strcpy_P(arr16, (PGM_P)F("pf: xtrm lagging"));
-    else if(objModBusVar.pfRange == PF_Ranges::xtrmLead)
-      strcpy_P(arr16, (PGM_P)F("pf: xtrm leading"));
+    if(objMFT_Data.pfRange == PF_Ranges::lagging)
+      strcpy_P(tftST7735Display.charBuffer, (PGM_P)F("pf: just lagging"));
+    else if(objMFT_Data.pfRange == PF_Ranges::leading)
+      strcpy_P(tftST7735Display.charBuffer, (PGM_P)F("pf: just leading"));
+    else if(objMFT_Data.pfRange == PF_Ranges::xtrmLagg)
+      strcpy_P(tftST7735Display.charBuffer, (PGM_P)F("pf: xtrm lagging"));
+    else if(objMFT_Data.pfRange == PF_Ranges::xtrmLead)
+      strcpy_P(tftST7735Display.charBuffer, (PGM_P)F("pf: xtrm leading"));
+    else if(objMFT_Data.pfRange == PF_Ranges::unitypf)
+      strcpy_P(tftST7735Display.charBuffer, (PGM_P)F("  - unity pf -  "));
     else
-      strcpy_P(arr16, (PGM_P)F("pf: unity pf!   "));
+      strcpy_P(tftST7735Display.charBuffer, (PGM_P)F(" - invalid pf - "));
 
-    textPrintOnTFT_SmallFont(arr16, 2);
+    tftST7735Display.textPrintSmallFont(2);
 
   // ----------------- display power factor from mod bus--------------------
-    strcpy_P(arr16, (PGM_P)F(" pf Value: 0.00 ")); 
-    insertFloatVal_intoCharArray(arr16, 12, 4, 2, objModBusVar.pf, false);
-    textPrintOnTFT_SmallFont(arr16, 3);
+    strcpy_P(tftST7735Display.charBuffer, (PGM_P)F(" pf Value: 0.00 ")); 
+    insertFloatVal_intoCharArray(tftST7735Display.charBuffer, 12, 4, 2, objMFT_Data.pf, false);
+    tftST7735Display.textPrintSmallFont(3);
 
   // ----------------- display low power factor limit -----------------------
-    strcpy_P(arr16, (PGM_P)F("low pf lim: 0.00")); // for both lagging & leading
-    insertFloatVal_intoCharArray(arr16, 13, 4, 2, PF_LIMIT, false);
-    textPrintOnTFT_SmallFont(arr16, 4);  
+    strcpy_P(tftST7735Display.charBuffer, (PGM_P)F("low pf lim: 0.00")); // for both lagging & leading
+    insertFloatVal_intoCharArray(tftST7735Display.charBuffer, 13, 4, 2, PF_LIMIT, false);
+    tftST7735Display.textPrintSmallFont(4);  
 
   // ----------------- display reactive power from mod bus------------------
-    strcpy_P(arr16, (PGM_P)F("Net_kVAr: +00.00"));
-    insertFloatVal_intoCharArray(arr16, 11, 6, 2, objModBusVar.kVAr, true);
-    textPrintOnTFT_SmallFont(arr16, 6);
+    strcpy_P(tftST7735Display.charBuffer, (PGM_P)F("Net_kVAr: +00.00"));
+    insertFloatVal_intoCharArray(tftST7735Display.charBuffer, 11, 6, 2, objMFT_Data.kVAr, true);
+    tftST7735Display.textPrintSmallFont(6);
     
   }
 
   void displayBanksInService(){
-    ucg.clearScreen(); ucg.setFont(ucg_font_9x18_tf);
-    strcpy_P(arr16, (PGM_P)F(" CapBank Status ")); textPrintOnTFT_SmallFont(arr16, 1);
+    tftST7735Display.clearScreen(); tftST7735Display.setSmallFont(); tftST7735Display.clearCharBuffer();
+    strcpy_P(tftST7735Display.charBuffer, (PGM_P)F(" CapBank Status ")); tftST7735Display.textPrintSmallFont(1);
     for(uint8_t i=0; i<4; i++){
-      strcpy_P(arr16, (PGM_P)F("CapBankPos-n : x"));
-      arr16[11] = 1 << i; arr16[11] += 48;
-      arr16[15] = objCapBank.capBankStatusCurr[i]; arr16[15] += 48;
-      textPrintOnTFT_SmallFont(arr16, i+2);
+      strcpy_P(tftST7735Display.charBuffer, (PGM_P)F("CapBankPos-n : x"));
+      tftST7735Display.charBuffer[11] = 1 << i; tftST7735Display.charBuffer[11] += 48;
+      tftST7735Display.charBuffer[15] = objCapBank.capBankStatusCurr[i]; tftST7735Display.charBuffer[15] += 48;
+      tftST7735Display.textPrintSmallFont(i+2);
     }
   }
 
   void displayCounters(){
-    ucg.clearScreen(); ucg.setFont(ucg_font_9x18_tf);
-    strcpy_P(arr16, (PGM_P)F(" Counter Values ")); textPrintOnTFT_SmallFont(arr16, 1);
+    tftST7735Display.clearScreen(); tftST7735Display.setSmallFont(); tftST7735Display.clearCharBuffer();
+    strcpy_P(tftST7735Display.charBuffer, (PGM_P)F(" Counter Values ")); tftST7735Display.textPrintSmallFont(1);
     for(uint8_t i=0; i<4; i++){
-      strcpy_P(arr16, (PGM_P)F(" CB Bit-n 00000 "));
-      arr16[8] = 1 << i; arr16[8] += 48;
-      insertUintVal_intoCharArray(arr16, 11, 5, objCapBank.switchingCnt[i]);
-      textPrintOnTFT_SmallFont(arr16, i+3);
+      strcpy_P(tftST7735Display.charBuffer, (PGM_P)F(" CB Bit-n 00000 "));
+      tftST7735Display.charBuffer[8] = 1 << i; tftST7735Display.charBuffer[8] += 48;
+      insertUintVal_intoCharArray(tftST7735Display.charBuffer, 11, 5, objCapBank.switchingCnt[i]);
+      tftST7735Display.textPrintSmallFont(i+3);
     }
   }
 
   void displayModBusReadFail(){
-    ucg.clearScreen(); ucg.setFont(ucg_font_9x18_tf);
-    strcpy_P(arr16, (PGM_P)F("  Mod Bus Read  ")); textPrintOnTFT_SmallFont(arr16, 1);
-    strcpy_P(arr16, (PGM_P)F("     Failed!    ")); textPrintOnTFT_SmallFont(arr16, 2);
-    strcpy_P(arr16, (PGM_P)F("   Error Code   ")); textPrintOnTFT_SmallFont(arr16, 4);
-    strcpy_P(arr16, (PGM_P)F("                ")); uint8ToHex(modBusComResult, arr16, 7); textPrintOnTFT_SmallFont(arr16, 5);
-  }
-
-  void textPrintOnTFT_SmallFont(char* txtLine, uint8_t linePos){ // 13 char max, linPos 1,2,3..
-    ucg.setPrintPos(9, linePos*20);
-    ucg.print(txtLine);
+    tftST7735Display.clearScreen(); tftST7735Display.setSmallFont(); tftST7735Display.clearCharBuffer();
+    strcpy_P(tftST7735Display.charBuffer, (PGM_P)F("  Mod Bus Read  ")); tftST7735Display.textPrintSmallFont(1);
+    strcpy_P(tftST7735Display.charBuffer, (PGM_P)F("     Failed!    ")); tftST7735Display.textPrintSmallFont(2);
+    strcpy_P(tftST7735Display.charBuffer, (PGM_P)F("   Error Code   ")); tftST7735Display.textPrintSmallFont(4);
+    strcpy_P(tftST7735Display.charBuffer, (PGM_P)F("                "));
+    uint8ToHex(objModBusCom.modBusComResult, tftST7735Display.charBuffer, 7); tftST7735Display.textPrintSmallFont(5);
   }
 
   void uint8ToHex(uint8_t value, char* buffer, uint8_t startPos) { //startPos value 1,2,3,...
@@ -79,14 +75,6 @@
       startPos++; buffer[startPos] = 'x';
       startPos++; buffer[startPos] = hexDigits[(value >> 4) & 0x0F]; // High nibble
       startPos++; buffer[startPos] = hexDigits[value & 0x0F];        // Low nibble
-  }
-
-  void initializeDisplay(){
-    arr16[16] = '\0';
-    ucg.begin(UCG_FONT_MODE_SOLID);
-    ucg.setRotate270();
-    ucg.setColor(1, 0, 0, 0);        // Background color: Black (R,G,B)
-    ucg.setColor(0, 255, 255, 255);  // Text color: White (R,G,B)
   }
 
   #define SIZE_TEMP_STR 7 // must be > fullDcmlLen

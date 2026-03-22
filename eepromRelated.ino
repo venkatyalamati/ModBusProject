@@ -1,3 +1,4 @@
+ #include <EEPROM.h>
 // -------------- EEPROM related functions ---------------
   bool erase_eeprom_if_req(int addrValStr){
     int checkResult = 0;
